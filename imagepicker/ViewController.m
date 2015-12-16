@@ -7,6 +7,8 @@
 //
 
 #import "ViewController.h"
+#import <AVFoundation/AVCaptureDevice.h>
+#import <AVFoundation/AVMediaFormat.h>
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
@@ -15,6 +17,23 @@
 
 @implementation ViewController
 - (IBAction)show:(id)sender {
+    
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    if (authStatus == AVAuthorizationStatusRestricted || authStatus ==AVAuthorizationStatusDenied)
+    {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"相机权限未开启?" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"去开启" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+        }];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            
+        }];
+        [alert addAction:defaultAction];
+        [alert addAction:cancelAction];
+        [self presentViewController:alert animated:YES completion:nil];
+        return;
+    }
     self.imagePicker = [[GKImagePicker alloc] init];
     self.imagePicker.cropSize = CGSizeMake(296, 300);
     self.imagePicker.delegate = self;

@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface ViewController : UIViewController
-
+#import "GKImagePicker.h"
+@interface ViewController : UIViewController<GKImagePickerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@property (nonatomic, strong) GKImagePicker *imagePicker;
 
 @end
 
